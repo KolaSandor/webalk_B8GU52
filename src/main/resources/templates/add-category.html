@@ -1,0 +1,29 @@
+<!-- add-category.html (Admin) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Category</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+  <h1>Add New Category</h1>
+  <nav>
+    <ul>
+      <li><a href="/categories">Back to Categories</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <form method="POST" action="/categories/add">
+    <label for="name">Category Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <button type="submit">Add Category</button>
+  </form>
+</main>
+</body>
+</html>
