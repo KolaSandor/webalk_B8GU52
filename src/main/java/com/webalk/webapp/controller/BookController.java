@@ -23,6 +23,8 @@ public class BookController {
     public String listBooks(Model model) {
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
+        List<Category> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
         return "books";
     }
 
@@ -36,29 +38,8 @@ public class BookController {
     @PostMapping("/add")
     public String addBook(@ModelAttribute Book book) {
         bookService.saveBook(book);
-        return "redirect:/books";
+        return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editBookForm(@PathVariable Long id, Model model) {
-        Optional<Book> book = bookService.getBookById(id);
-        if (book.isEmpty()) {
-            throw new IllegalArgumentException("A könyv nem található az azonosító alapján: " + id);
-        }
-        model.addAttribute("book", book.get());
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "edit-book";
-    }
 
-    @PostMapping("/edit/{id}")
-    public String updateBook(@PathVariable Long id, @ModelAttribute Book book) {
-        bookService.updateBook(id, book);
-        return "redirect:/books";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
-        return "redirect:/books";
-    }
 }

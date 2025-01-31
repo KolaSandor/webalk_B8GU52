@@ -17,7 +17,10 @@ VALUES
 ('Bob', 'bob', '$2a$10$KdHd9kZSPW/y.5GsfpNgOeWSkkMQMJ9iDYfqtmg/J1lvxKGBZfvzO'),
 ('Charlie', 'charlie', '$2a$10$KdHd9kZSPW/y.5GsfpNgOeWSkkMQMJ9iDYfqtmg/J1lvxKGBZfvzO'),
 ('Diana', 'diana', '$2a$10$KdHd9kZSPW/y.5GsfpNgOeWSkkMQMJ9iDYfqtmg/J1lvxKGBZfvzO'),
-('Eve', 'eve', '$2a$10$KdHd9kZSPW/y.5GsfpNgOeWSkkMQMJ9iDYfqtmg/J1lvxKGBZfvzO');
+('Eve', 'eve', '$2a$10$KdHd9kZSPW/y.5GsfpNgOeWSkkMQMJ9iDYfqtmg/J1lvxKGBZfvzO'),
+
+('Name', 'username', 'password');
+
 
 -- INSERT INTO user_role
 INSERT INTO user_role (user_id, role_id)
@@ -27,6 +30,9 @@ VALUES
 (3, 1), -- Charlie -> ROLE_USER
 (4, 2), -- Diana -> ROLE_ADMIN
 (5, 2); -- Eve -> ROLE_ADMIN
+
+(6, 1), -- username -> ROLE_USER
+
 
 -- INSERT INTO category
 INSERT INTO category (name)

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,17 +18,30 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final BookService bookService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, BookService bookService, CategoryService categoryService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.bookService = bookService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/dashboard")
     public String adminDashboard(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "admin";
+    }
+
+    @GetMapping("/admin-books")
+    public String adminBooks(Model model) {
+        List<Book> books = bookService.getAllBooks();
+        model.addAttribute("books", books);
+        List<Category> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
+        return "admin-books";
     }
 
     @GetMapping("/add-user")
@@ -70,7 +84,10 @@ public class AdminController {
         Role role = roleService.getRoleById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found with ID: " + roleId));
         existingUser.setUsername(user.getUsername());
-        existingUser.setPassword(user.getPassword());
+        if(user.getPassword() != null)
+            existingUser.setPassword(user.getPassword());
+        else
+            existingUser.setPassword(existingUser.getPassword());
         existingUser.setRoles(Set.of(role)); // Javított típuskezelés
         userService.saveUser(existingUser);
         return "redirect:/admin/dashboard";
@@ -84,4 +101,28 @@ public class AdminController {
         userService.deleteUser(id); // Javított metódushivatkozás
         return "redirect:/admin/dashboard";
     }
+
+    @GetMapping("/edit/{id}")
+    public String editBookForm(@PathVariable Long id, Model model) {
+        Optional<Book> book = bookService.getBookById(id);
+        if (book.isEmpty()) {
+            throw new IllegalArgumentException("A könyv nem található az azonosító alapján: " + id);
+        }
+        model.addAttribute("book", book.get());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "edit-book";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateBook(@PathVariable Long id, @ModelAttribute Book book) {
+        bookService.updateBook(id, book);
+        return "redirect:/admin/admin-books";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return "redirect:/admin/admin-books";
+    }
+
 }

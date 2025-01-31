@@ -2,7 +2,9 @@ package com.webalk.webapp.controller;
 
 import com.webalk.webapp.entity.Loan;
 import com.webalk.webapp.service.LoanService;
+import com.webalk.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +16,21 @@ import java.util.List;
 public class LoanController {
 
     private final LoanService loanService;
+    private final UserService userService;
+
 
     @Autowired
-    public LoanController(LoanService loanService) {
+    public LoanController(LoanService loanService, UserService userService) {
         this.loanService = loanService;
+        this.userService = userService;
     }
 
     @GetMapping
-    public String listLoans(Model model) {
-        List<Loan> loans = loanService.getAllLoans();
-        model.addAttribute("loans", loans);
+    public String listLoans(Model model, Authentication auth) {
+
+        List<Loan> loans = loanService.getLoansToUser(userService.getUserByUsername(auth.getName()).get().getId());
+        model.addAttribute("loansToUser", loans);
+        //model.addAttribute("loans", loans);
         return "loans";
     }
 

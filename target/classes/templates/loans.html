@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title><!-- loans.html (User) -->
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>My Loans</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My loans</title>
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/books">My Dashboard</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/loans">My loans</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <body>
 <header>
   <h1>My Loans</h1>
@@ -23,7 +34,27 @@
 </header>
 <main>
   <div id="loan-list">
-    <!-- Kölcsönzések listázása itt jelenik meg -->
+    <div class="container mt-5">
+      <h2 class="mb-4">Available List</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Category</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="loan : ${loansToUser}">
+          <td th:text="${loan.book.id}"></td>
+          <td th:text="${loan.book.title}"></td>
+          <td th:text="${loan.book.author}"></td>
+          <td th:text="${loan.book.category.name}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>
 </body>

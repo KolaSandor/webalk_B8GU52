@@ -36,7 +36,7 @@ public class CategoryController {
     @PostMapping("/add")
     public String addCategory(@ModelAttribute Category category) {
         categoryService.saveCategory(category);
-        return "redirect:/categories";
+        return "redirect:/admin/dashboard";
     }
 
     @GetMapping("/edit/{id}")
